@@ -1,0 +1,164 @@
+05.08
+10시 ~ 11시 : K-ICT 빅데이터센터 / 인프라 소개
+
+
+Q. 데이터 오픈관련
+- 데이터 관련해서 가능성적인 부분때문에 하고있긴한데 잘 오픈 안함
+- 해봤자 공공데이터, 오픈랩이 주로 차지함.
+
+Q. 데이터 수집관련
+-  LOD
+
+Q. 데이터 업데이트 관련
+- 자동으로 수집하고 업데이트 함, 당연한거지만 수동절차는 아님..
+
+- 비는시간 예약 & 교육장 오픈 
+
+================
+- 빅데이터센터 이용자 교육
+: Python을 활용한 데이터 분석 - Numpy, Pandas, Matplotlib
+
+참가자 대부분 - 데이터 사이언스 전공, PM, 컨설팅, 처음, 박사과정등...
+
+[실습환경 구축]
+1, Python 직접설치 - 뭐 알겠지만 모듈 직접 다운받고 해야됨
+2. Anaconda : 파이썬의 패키지화. 깔면 패키지 100개 이상이 동시에 깔려짐
+3. Jupyter notebook : 웹 기반 IDE
+
+1. 원격 데스크톱 연결
+2. 210.114.91.91:20173
+3. eduuser // hello.edu
+4. Login to xrdp
+5. 서버 접속 : Applications - Favorites - Terminal
+
+==============
+
+conda install -n "name" python = "version"
+conda install "name" numpy pandas matplotlib
+source activate "name"
+jupyter notebook (folder path)
+
+Python이란?
+Python의 장/단점
+Python의 특징
+Python의 버전차이(2.x vs 3.x, 문법차이)
+Python의 주요 구현체 - CPYthon, Jpython, Ironpython등...
+Python 데이터 분석 패키지 맵
+// Numpy, Pandas, Scipy, Scikit-Image, NLTK, Keras, Tensorflow...
+
+=============
+
+Python 문법 초급
+변수, 조건/반복문, 함수, 클래스,. 
+
+==========================
+05.09
+
+윤중연강사 (jungyeon.yoon@travelio.io)
+
+- Travelio CTO // 인공지능 여행 플랫폼 트라벨리오
+- iHeartRadio Data Engineer
+금융쪽에서 일을 했다고 함
+하루에 페타바이트 가량의 큰 데이터를 다룸
+
+Part1. DADAH - Engineering Perspective
+Part2. DADAH - Statistics Perspective
+
+Data flow - live Streaming or Batch Data.
+즉 instantaneous Data (즉각적인 데이터)를 다룬다고 함.
+anomaly(outlier - 변칙, 특이치) 데이터를 전처리해야함.
+
+Data anomaly Detection And Handling
+//engineering : data 문제없는데 anomaly발생하니까 아 고쳐야겠다
+//statistical : 아 데이터를 수정해야겠다
+
+[Engineering Perspective]
+- 데이터가 변형하는순간마다 테스트케이스를 넣음. 
+예상치 못한 edge case 발생시 두가지 선택함
+A : default value 할당 후 다음 이벤트 실행
+B : 터트리고 멈춘다,
+
+A장점 - 프로세스 안터지고 데이터를 가지는것 
+A단점 - 맞는 결과물인지, default value에 의한것인지 구분을 못함
+B장점 - 데이터 퀄리티 유지가능
+B단점 - A보다 상대적으로 데이터가 작아짐 (양보다 질)
+
+Streaming process : replay
+Data Mutation Blown Up -> 그 데이터를 investigation queue로 넣고
+Apply patch to the data mutation logic -> 어디서 터졌고 분석해서 patch를 만들고 적용함,
+Data mutated successfully -> patch 적용한거로 해봄
+Insight -> 됨
+
+Workflow Management : 일처리에 있어서 일련의 과정?
+Exmaple. 식당 주인인데 하루에 10명씩 오는 식당임
+근데 소문나가지고 하루에 100명이나 1000명이 오는 경우, 어떻게 할 것인가?
+--> 말그대로 담당별 매니저를 할당할텐데, 사람이 여러명일 경우 업무와 업무의 상관관계가 생기게됨.
+--> 1번째가 잘 안되면, 2번째에 전달해서 잘 안도댔으니 기다려라는등. 메시지를 전달해야됨
+
+Workflow management tool(Open Source)
+:상관관계 정리 툴
+Crontab -> In-house scheduling tool -> spotify luigi -> intent media mario -> airbnb airflow
+Crontab : 리눅스 반복 예약작업
+In-house scheduling tool : 자체적으로 개발해서 사용함
+spotify luigi : 파이썬 기반으로 만든거.아마도 스트리밍 관련해서 만든거같은데 나중에 찾아보는거로 ㅇㅇ
+intent media mario : scala 사용
+airbnb airflow : 파이썬 기반
+
+Airflow
+- Workflow Management Framework by AirbnB
+- DAG : Directed Acyclic Graph : 방향이 있고 순환이 없는 그래프
+- 다양한 언어로 개발 : Bash, Java, Python, MySQL
+- DAG, Scheduling, Slack 연동해서 메시지 전송 가능
+
+[요약]
+예전같으면 Go Stop이지만,
+지금은 Streaming, Replay 기능을 활용해 문제없는건 보관하고
+문제 있는건 Investigate Queue에 넣어서 Patch 제작하고 다시 적용시켜서
+오류없이 잘 되면 Input Data로 사용을 하게 된다.
+이런 부분이 잘 되려면 Workflow management tool을 사용하는데, airbnb을 예시로 들었음.
+
+[Statistical Perspective]
+In-house system이 완벽하다고 할 때, input data가 이상하다면 result는 당연이 망하겠찌
+1. Underlying Distribution Discovery Phase
+2. Distribution Refinement Phase
+
+Underlying Distribution Discovery Phase : goodness of test
+Distribution Refinement Phase : y = ax1 + bx2 + c라는 함수가 있을 때, y/x 값 주어지고 variable을 조정하는 것 ㅇㅇ
+뭔가 y값이 다르면 잘못 예측한거니까 수정하고, 뭐 잘 됐다 했을때 그래프 외부에 있는것들은 [Outlier] label을 붙인다. 
+//similar to Linear regression?
+
+Sparse Data - Poisson Distribution : Data가 특정 시간마다 옴 ㅇㅇ 일정 시간에 특정 사건이 n번 일어날 확률(?)
+Central Limit Theorem (CLT) : 다양한 그래프에 대한 평균 그래프?, 벨커브
+Law of large numbers (LLN) : 어떤 특정한 사건을 겁나 많이 하면 결론적으로 +- 0에 가까워진다는거?
+CLT : 데이터의 특성에 상관없이 분포를 나타내면 특정 값이 높게 나타나는거 // 표준편차 (normal distribution)
+
+Z-Score 
+Normal Distribution Percentile and Outliaers
+InNormal Distribution - 그냥 stride 구하는거라고 생각을 하자
+
+What is CTR = Click Through Rate
+- 특정 링크를 클릭한 사용자의 수를 이용해 특정 웹사이트의 온라인 광고 캠페인 성공여부 측정방법
+- Click (클릭), Impression (노출)로 계산됨, 일반적으로 낮은확률(<<50%)
+
+CTR 분석/연구 -> CTR 표현하는 일반화된 공식 필요
+
+Outlier Handling
+Mayb be Linear Regression
+
+1. Outlier로 판단한 데이터들이 outlier = true라는 레이블을 추가하고, 이 데이터들은ㅇ 분석 모델 fit에 bias를 주기 때문에 예측 모델 작업에서 제외된다
+2. 해당 data의 meta data에 ip address와 같은 identifier가 존재할시 IP blacklist등에 추가한다, 
+   - 그러나, probabilistic blacklist이기 때문에 false positiver가 발생할 수있으므로 분석모델에서만 제외하고 데이터는 저장된다.
+
+conclusion
+DADAH = Software Engineering Perspective + Statistical Perspective
+근본이 되는 distribution을 찾아 outline을 찾아 따로 빼거나 outline detection algorithm을 사용해 레이블을 달고 input data에서 제외함 ㅇㅇ
+--> data normalization, regularization
+
+[데이터 모으는거]
+1. 내부 internal data : 서비스(웹/앱)에서 발생하는 모든 이벤트
+2. 외부 external data : 정부 Open API는 그렇다 치고, 크롤링 : Text Parsing, risk를 어느정도 감수해야됨
+
+[어케 OTA를 하게됨]
+Online Travel Agency : 온라인상에서 숙박 예약대행, 수수료 받는거 
+--> 그냥 사용자가 원하는 숙소 찾는데 시간도 오래걸리고 힘든 UX를 경험해봤다고 함.
+--> 그래서 사용자의 취향에 맞는 숙소를 추천해주면 좋을 것 같아고해서 OTA를 시작하게됨
